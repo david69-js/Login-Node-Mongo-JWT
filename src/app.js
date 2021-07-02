@@ -3,13 +3,14 @@ const bodyParser = require('body-parser')
 const routes = require('./routes/routes')
 const cors = require("cors");
 const app = express();
+require('dotenv').config({ path: 'prod.env' });
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-
+const port = process.env.PORT || 3000;
 app.use(cors({
-  origin: "https://backend-course.herokuapp.com/",
+  origin: port,
   credentials: true,
 }))
 
