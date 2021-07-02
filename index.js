@@ -2,7 +2,7 @@ require('dotenv').config({ path: 'prod.env' });
 
 //Mongo connection
 const mongoose = require('mongoose');
-const app = require('./app')
+const app = require('./src/app')
 const host = process.env.HOST || '0.0.0.0';
 const port = process.env.PORT || 3000;
 mongoose.set('useNewUrlParser', true);
