@@ -1,6 +1,4 @@
-if (process.env.NODE_ENV != 'production') {
-    require('dotenv').config({ path: 'prod.env' });
-}
+require('dotenv').config({ path: 'prod.env' });
 
 //Mongo connection
 const mongoose = require('mongoose');
