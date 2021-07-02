@@ -8,7 +8,7 @@ require('dotenv').config({ path: 'prod.env' });
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-const port = process.env.PORT || 3000;
+const client = process.env.CLIENT;
 app.use(cors({
   origin: port,
   credentials: true,
