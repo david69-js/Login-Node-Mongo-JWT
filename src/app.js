@@ -10,7 +10,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 const client = process.env.CLIENT;
 app.use(cors({
-  origin: port,
+  origin: client,
   credentials: true,
 }))
 
