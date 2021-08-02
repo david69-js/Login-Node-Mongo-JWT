@@ -28,7 +28,7 @@ const Controller = {
             return user.isCorrectPassword(password, (err, result ) =>{
                 if(err) return res.status(500).send({message: 'Authentication error'});
                 if(!result) return res.status(404).send({message: 'failed'})
-                return  res.status(200).json({accessToken})
+                return  res.status(200).json({accessToken, user:user})
             }) 
         });
         }catch(err){
