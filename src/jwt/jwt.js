@@ -7,6 +7,7 @@ function validateToken(req, res, next) {
     jwt.verify(accessToken, process.env.SECRET, (err, user) => {
         if (err) return res.send('Access denied, token expired or incorrect');
         req.userId = user.id;
+        console.log(req.userId);
         next();
     })
 };
