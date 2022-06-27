@@ -10,8 +10,8 @@ app.get('/' , (req , res)=>{
 
 //Login and user
 app.post('/register', UserController.register);
-app.post('/login', validateToken, UserController.login);
-app.get('/user/:id', validateToken, UserController.getUser);
+app.post('/login', UserController.login);
+app.get('/user/:id', UserController.getUser);
 app.delete('/delete-user/:id', validateToken, UserController.deleteUser);
 
 //Task 

@@ -1,8 +1,9 @@
 const mongose = require('mongoose')
-const bcrypt = require('bcrypt');
 const Tasks = require('./Tasks');
 const salRounds = 10; //Bcryp know, how to many times should yo encrypt
 const Schema = mongose.Schema;
+const bcrypt = require('bcrypt');
+
 
 const modelUser = Schema ({
     _id: Schema.Types.ObjectId,
@@ -26,10 +27,4 @@ modelUser.pre('save', function(next) {
     }
 });
 
-modelUser.methods.isCorrectPassword = function(password, callback) {
-    bcrypt.compare(password, this.password, function(err, same){
-        if(err) return callback(err);
-        callback(err, same)
-    })
-}
 module.exports = mongose.model('User', modelUser)

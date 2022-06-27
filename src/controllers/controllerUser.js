@@ -1,35 +1,34 @@
 const User = require('../models/User');
-const { generateAccessToken, isCorrectPassword } = require('../jwt/jwt')
+const { generateAccessToken } = require('../jwt/jwt')
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 
 const Controller = {
     register: async (req, res) =>{
-      try{
-        const {name, email, password } = req.body;
-        const user = new User({_id: new mongoose.Types.ObjectId(), name, email, password});
-       await user.save( (err, saveUser) =>{
-            if(err) return res.status(500).send({message: 'An error has occurred'});
-            if(!saveUser) return res.status(404).send({message: 'Error, 404 not saving'});
-            const accessToken = generateAccessToken(user._id)
-           return res.status(200).json({accessToken, message: 'success', user: user._id, auth: true})
-       }) ;
-      }catch(err){
-          console.log(err);
-        }
-    },
+        try{
+          const {name, email, password } = req.body;
+          const user = new User({_id: new mongoose.Types.ObjectId(), name, email, password});
+         await user.save( (err, saveUser) =>{
+              if(err) return res.status(500).send({message: 'An error has occurred'});
+              if(!saveUser) return res.status(404).send({message: 'Error, 404 not saving'});
+              const accessToken = generateAccessToken(user._id, user.name)
+             return res.status(200).json({accessToken})
+         }) ;
+        }catch(err){
+            console.log(err);
+          }
+      },
     login: async (req, res) =>{
         try{
         const {email, password} = req.body;
-        const accessToken = generateAccessToken(User._id)
         await User.findOne({email}, (err, user)  =>{
-            if (err) return res.status(500).send({message: 'Failed to authentecate user'});
+            if (err) return res.status(500).send({message: 'Failed to authenticate user'});
             if(!user) return res.status(404).send({message: 'failed'});
-            
-            return user.isCorrectPassword(password, (err, result ) =>{
-                if(err) return res.status(500).send({message: 'Authentication error'});
-                if(!result) return res.status(404).send({message: 'failed'})
-                return  res.status(200).json({accessToken, user:user})
-            }) 
+
+            const validPassword = bcrypt.compare(password, user.password);
+            if (!validPassword) return res.status(404).send({message: 'failed'})
+            const accessToken = generateAccessToken(user._id, user.name);
+                res.status(200).json({token: accessToken})
         });
         }catch(err){
             console.log(err);
