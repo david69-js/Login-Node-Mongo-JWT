@@ -21,14 +21,15 @@ const Controller = {
     login: async (req, res) =>{
         try{
         const {email, password} = req.body;
-        await User.findOne({email}, (err, user)  =>{
+        await User.findOne({email}, async (err, user)  =>{
             if (err) return res.status(500).send({message: 'Failed to authenticate user'});
             if(!user) return res.status(404).send({message: 'failed'});
 
-            const validPassword = bcrypt.compare(password, user.password);
+            const validPassword = await bcrypt.compare(password, user.password);
             if (!validPassword) return res.status(404).send({message: 'failed'})
-            const accessToken = generateAccessToken(user._id, user.name);
+                const accessToken = generateAccessToken(user._id, user.name);
                 res.status(200).json({token: accessToken})
+            
         });
         }catch(err){
             console.log(err);
